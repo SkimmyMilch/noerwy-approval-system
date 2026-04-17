@@ -1,6 +1,6 @@
 import { DocumentData } from '../types';
 
-const BACKEND = 'https://script.google.com/macros/s/AKfycbzsrpqO9S7MLcaSHCpYl8xIslCgOQvKHJtmomyPzwqmuq2an4Z1gUZvNMkiiDJVwldK6g/exec';
+const BACKEND = 'https://script.google.com/macros/s/AKfycbwPCDQ7LCGdfwDcLkLZKc2aC6toM_vnpiHfyOy7km9hDqM_l3OannermfOHs3nGmbLxXA/exec';
 
 export async function loadDocuments(): Promise<DocumentData[]> {
   try {

@@ -136,7 +136,60 @@ function sendWA(waNumber, message) {
   UrlFetchApp.fetch(url, { method: 'post', headers: { 'Authorization': FONNTE_TOKEN }, payload: payload });
 }
 
-function getSheet() { return SpreadsheetApp.openById(SHEET_ID).getSheetByName('Documents'); }
+function sendReminder(data) {
+  var sheet = getSheet();
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (rows[i][0] !== data.docId) continue;
+    var row = rows[i];
+    
+    // Send to whichever is still pending
+    if (row[8] === 'pending') {
+      sendApprovalRequest(row[7], row[6], row[1], row[0], 'a1');
+    }
+    if (row[12] === 'pending') {
+      sendApprovalRequest(row[11], row[10], row[1], row[0], 'a2');
+    }
+    return { success: true };
+  }
+  return { success: false, error: 'Document not found' };
+}
+
+function getUploadToken(data) {
+  return {
+    token: ScriptApp.getOAuthToken(),
+    folderId: DRIVE_FOLDER
+  };
+}
+
+function finalizeUpload(data) {
+  var file = DriveApp.getFileById(data.fileId);
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  return { success: true, driveId: data.fileId, filename: data.filename };
+}
+
+function uploadFile(data) {
+  var folder = DriveApp.getFolderById(DRIVE_FOLDER);
+  var blob = Utilities.newBlob(Utilities.base64Decode(data.base64), data.mimeType, data.filename);
+  var file = folder.createFile(blob);
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  return { success: true, driveId: file.getId(), filename: data.filename };
+}
+
+function getSheet() { 
+  var ss;
+  try {
+    ss = SpreadsheetApp.openById(SHEET_ID);
+  } catch(e) {
+    throw new Error('Spreadsheet ID invalid or not accessible.');
+  }
+  var sheet = ss.getSheetByName('Documents'); 
+  if (!sheet) {
+    sheet = ss.insertSheet('Documents');
+    sheet.appendRow(['ID', 'Title', 'Type', 'Date', 'Description', 'DriveID', 'A1 Name', 'A1 WA', 'A1 Status', 'A1 Comment', 'A2 Name', 'A2 WA', 'A2 Status', 'A2 Comment', 'CreatedISO']);
+  }
+  return sheet;
+}
 function rowToDoc(r) { return { id: r[0], title: r[1], type: r[2], date: r[3], desc: r[4], driveId: r[5], a1: { name: r[6], wa: r[7], status: r[8], comment: r[9] }, a2: { name: r[10], wa: r[11], status: r[12], comment: r[13] } }; }
 function buildLink(docId, approverKey) { return APP_URL + '?doc=' + docId + '&approver=' + approverKey; }
 function normalizeWA(n) { n = String(n).replace(/[\s\-\+]/g, ''); if (n.charAt(0) === '0') n = '62' + n.slice(1); return n; }
