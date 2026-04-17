@@ -1,6 +1,6 @@
 import { DocumentData } from '../types';
 
-const BACKEND = 'https://script.google.com/macros/s/AKfycbwPCDQ7LCGdfwDcLkLZKc2aC6toM_vnpiHfyOy7km9hDqM_l3OannermfOHs3nGmbLxXA/exec';
+const BACKEND = 'https://script.google.com/macros/s/AKfycbwGE-zt8IyvuT4Z_tUbEf2pwogn3lolHYrBbTvuflbCSB6u4QBLrtOK8tcD48Wf-C0QMQ/exec';
 
 export async function loadDocuments(): Promise<DocumentData[]> {
   try {
@@ -125,6 +125,7 @@ export async function uploadFile(file: File): Promise<{ driveId: string | null; 
     // Finalize upload
     const finalRes = await fetch(BACKEND, {
       method: 'POST',
+      redirect: 'follow',
       body: JSON.stringify({ action: 'finalizeUpload', fileId, filename }),
     });
     const finalData = await finalRes.json();
@@ -141,6 +142,7 @@ export async function uploadFile(file: File): Promise<{ driveId: string | null; 
         try {
           const res = await fetch(BACKEND, {
             method: 'POST',
+            redirect: 'follow',
             body: JSON.stringify({
               action: 'uploadFile',
               base64,
