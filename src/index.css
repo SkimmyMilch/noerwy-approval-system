@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: "Inter", serif; /* Minimalist doesn't usually use serifs, but we'll map it to sans for consistency or keep it if requested */
+  
+  --color-blue-naf: #1a1a1a; /* Replaced blue with minimalist black */
+  --color-blue-naf-dk: #000000;
+  --color-blue-naf-lt: #f7f7f7;
+  --color-green-naf: #10b981;
+  --color-green-naf-lt: #ecfdf5;
+  --color-red-naf: #ef4444;
+  --color-red-naf-lt: #fef2f2;
+  --color-amber-naf: #f59e0b;
+  --color-amber-naf-lt: #fffbeb;
+}
+
+:root {
+  --bg: #fdfdfd;
+  --sidebar-bg: #f7f7f7;
+  --white: #fff;
+  --text: #1a1a1a;
+  --text2: #525252;
+  --text3: #737373;
+  --border: #e5e5e5;
+  --r: 8px;
+  --r-sm: 6px;
+  --shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+/* Custom styles kept but updated for theme */
+.drive-ph-icon::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  width: 16px;
+  height: 16px;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0 6px 0 4px;
+}
+
+.wa-wrap {
+  background: #e5ddd5;
+}
+
+.wa-bubble {
+  background: #fff;
+  border-radius: 0 10px 10px 10px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}

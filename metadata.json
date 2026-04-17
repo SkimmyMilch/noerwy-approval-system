@@ -1,0 +1,6 @@
+{
+  "name": "Noerwy Approval System",
+  "description": "Document approval system for Noerwy Aqua Farm integrated with Google Drive and WhatsApp notifications via Fonnte.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
